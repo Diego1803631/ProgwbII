@@ -1,0 +1,90 @@
+{
+  "_from": "react-animated-heart",
+  "_id": "react-animated-heart@0.0.7-alpha.1",
+  "_inBundle": false,
+  "_integrity": "sha512-xcy5oWOF3rc7dt8K+g7mdMLcyRIlYWleHSI8LLqlKRD2UVFUvhcl+qNS+X36qulMS0b9Nv0+wDgkLFQWjGB7cA==",
+  "_location": "/react-animated-heart",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-animated-heart",
+    "name": "react-animated-heart",
+    "escapedName": "react-animated-heart",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-animated-heart/-/react-animated-heart-0.0.7-alpha.1.tgz",
+  "_shasum": "6d9e8e4b5e712fddbeeb0d2d3df6f8e087a437e7",
+  "_spec": "react-animated-heart",
+  "_where": "C:\\Users\\diego\\Desktop\\Pantallas\\frontend",
+  "author": {
+    "name": "ShaunLWM"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/ShaunLWM/react-animated-heart/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "goober": "^2.0.37",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3"
+  },
+  "deprecated": false,
+  "description": "Simple Twitter-like animated heart",
+  "devDependencies": {
+    "@babel/cli": "^7.13.14",
+    "@babel/preset-react": "^7.13.13"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "homepage": "https://github.com/ShaunLWM/react-animated-heart#readme",
+  "keywords": [
+    "twitter-heart",
+    "twitter-animated-heart",
+    "like button",
+    "heart button",
+    "heart",
+    "exploding button"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "react-animated-heart",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ShaunLWM/react-animated-heart.git"
+  },
+  "scripts": {
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "publish:npm": "rm -rf dist && mkdir dist && babel src/components -d dist --copy-files",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
+  },
+  "version": "0.0.7-alpha.1"
+}
