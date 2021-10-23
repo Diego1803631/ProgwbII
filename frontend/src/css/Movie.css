@@ -1,0 +1,62 @@
+#banner {
+  width: 1250px;
+  max-height: 450px;
+  padding: auto;
+  object-fit: cover;
+  object-position: 100% 0;
+}
+#poster {
+  border-radius: 5%;
+  max-width: 200px;
+  max-height: 296px;
+  float: left;
+  position: relative;
+  bottom: 50px;
+  left: 30px;
+  filter: drop-shadow(0 0 0.75rem black);
+}
+#desc {
+  max-width: 90%;
+  min-height: 300px;
+  color: white;
+  text-align: justify;
+  position: relative;
+  top: 10px;
+  left: 50px;
+}
+#Review {
+  color: white;
+  border: transparent;
+  margin: 3%;
+  background-color: transparent;
+}
+#likes {
+  float: left;
+  margin-right: 10px;
+}
+#reviews {
+  float: left;
+  margin-right: 10px;
+}
+#label2 {
+  margin-top: 10%;
+  color: rgba(131, 131, 148, 255);
+}
+#avatareview {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 20px;
+}
+#log {
+    float: right;
+    display: inline-flex;
+}
+#btnLike{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+#dropdown-basic-agregarALista{
+  margin-left: 5px;
+}

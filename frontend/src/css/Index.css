@@ -1,0 +1,174 @@
+body {
+  background: linear-gradient(to right, #020015, #0b2556);
+}
+#SearchBar {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50px;
+  color: white;
+}
+#SearchBar2 {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50px;
+  color: white;
+}
+#SearchBar3 {
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  margin-right: 10px;
+}
+.search-icon {
+  color: rgba(131, 131, 148, 255);
+  font-size: 20px;
+  width: auto;
+}
+.search-icon:hover {
+  color: rgba(180, 194, 191, 255);
+}
+#avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 30px;
+}
+.vertical {
+  border-left: 1px solid rgba(131, 131, 148, 255);
+  height: 40px;
+  margin-left: 30px;
+}
+.hr {
+  color: rgba(131, 131, 148, 255);
+}
+#ContainerMainPage {
+  padding: 50px;
+  margin-bottom: 20px;
+}
+#card {
+  background-color: transparent;
+  border: hidden;
+  padding: 20px;
+}
+#cardimg {
+  border-radius: 5%;
+  width: 200px;
+  height: 296px;
+}
+#cardimg:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+.footer {
+  background: #0b2556;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+}
+#title{
+  color: white;
+}
+#label{
+  color: rgba(131, 131, 148, 255);
+}
+.btnEntrar{
+margin-left: 20px;
+}
+.btnSeguir{
+  margin-left: 20px;
+  }
+.btnRegistrate{
+  margin-left: 5px;
+}
+#heart{
+  width: 50px;
+  height: 30px;
+  position: relative;
+  bottom: 38px;
+  left: 160px;
+  display: inline-flex;
+}
+#trespuntitos{
+  color: white;
+  width: 50px;
+  height: 30px;
+  position: relative;
+  bottom: 38px;
+  left: 120px;
+  display: inline-flex;
+}
+#buscaImportar{
+  display: inline-flex;
+  width: 100%;
+  margin-bottom: 15px;
+}
+#floatingCoverCustom{
+  margin-bottom: 10px;
+  width: 80%;
+  background-color: gray;
+}
+#floatingPosterCustom{
+  margin-bottom: 10px;
+  width: 80%;
+  background-color: gray;
+}
+#floatingDesc2Custom{
+  margin-bottom: 10px;
+  width: 80%;
+}
+#floatingDesc3Custom{
+  margin-left: 18%;
+  margin-bottom: 10px;
+  width: 80%;
+}
+#lblnocabe{
+  margin-left: 18%;
+}
+#btn_crearMovieSerie{
+  margin-top: 20px;
+  margin-bottom: 30px;
+  margin-left: 48%;
+}
+#dropdownCMS{
+  width: 100%;
+  display: inline-flex;
+}
+#defaultImgProfile{
+  margin-left: 40%;
+  width: 171px;
+  height: 180px;
+}
+#btn_crearUsuario{
+  margin-top: 20px;
+  margin-left: 45%;
+}
+#cardReview{
+  margin-left: 40%;
+}
+#cardReview h4{
+  margin-left: 50px;
+}
+#stars2:hover{
+  color: #ffa534;
+}
+#floatingDesc4Custom{
+  margin-left: 18%;
+  margin-bottom: 10px;
+  width: 80%;
+  margin-right: 5px;
+}
+#Modal {
+  background-color: #0b2556;
+}
+#Modal1 {
+  background-color: #0b2556;
+  color: white;
+}
+#btn_comentar{
+  margin-left: 90%;
+}
+.comment{
+  margin-left: 10%;
+}
