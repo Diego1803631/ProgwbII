@@ -9,6 +9,11 @@ Carpetas:<br />
 src/controllers--> Contiene los endpoints (get, post y delete).<br />
 src/models--> Contiene los schemas de la base de datos.<br />
 src/routes--> Contiene tadas las direcciones del los endpoints.<br />
+frontend/src/pages--> Contiene tadas las pantallas de la aplicación.<br />
+frontend/src/components--> Contiene todos los componentes de la aplicación.<br />
+frontend/src/css--> Contiene todos los estilos de las pantallas de la aplicación.<br />
+react-stars--> Contiene un componente de estrellas.<br />
+react-animated-heart--> Contiene un componente de corazón.<br />
 ------------------------------------------------------------------------------------------------------------<br />
 Diego Alberto Flores González 1803631<br />
 Daniel García Mazatán 1663204<br />
