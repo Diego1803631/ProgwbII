@@ -3,11 +3,27 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Auth0Provider } from "./hooks/react-auth0-spa";
+import Config from "./auth0_config.json";
+import History from "./utils/history";
+
+const onRedirectCallback = (appState) => {
+  History.push(
+    appState && appState.targetUrl
+      ? appState.targetUrl
+      : window.location.pathname
+  );
+}
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Auth0Provider
+    domain={Config.domain}
+    client_id={Config.clientId}
+    redirect_uri={window.location.origin}
+    onRedirectCallback={onRedirectCallback}
+    audience={Config.audience}>
     <App />
-  </React.StrictMode>,
+  </Auth0Provider>,
   document.getElementById('root')
 );
 

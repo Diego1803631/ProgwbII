@@ -1,30 +1,108 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import CardComp from "../components/CardComp";
+import CardList from "../components/CardList";
 import ReactStars from 'react-stars';
+import { useLocation } from "react-router";
+import { create } from "../api/ReviewAPI";
+import { updateScore } from "../api/MovieAPI";
+import { getReviewbyMovie } from "../api/ReviewAPI";
+import { useAuth0 } from "../hooks/react-auth0-spa";
 
 export default function CreateMovieSerie() {
+    const current = new Date();
+    const date = current.getDate() + "/" + current.getMonth() + "/" + current.getFullYear();
+    const { getTokenSilently } = useAuth0();
+    const { user: UserAuth } = useAuth0();
+    const userId = UserAuth?.sub;
+    const userAvatar = UserAuth?.picture;
+    const userName = UserAuth?.name;
+    const location = useLocation();
+    const { id, name, img } = location.state;
     const ratingChanged = (newRating) => {
         console.log(newRating)
+        stars = newRating;
+    }
+    var stars = "";
+    var [review, setReview] = useState({
+        content: "",
+        score: "",
+        date: "",
+        movie: "",
+        comment: [],
+        user: "",
+        avatar: "",
+        name: ""
+    });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setReview({
+            ...review,
+            [name]: value,
+        });
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setReview({
+            ...review,
+            score: stars,
+            date: date,
+            user: userId,
+            movie: id,
+            avatar: userAvatar,
+            username: userName
+        })
+        review = ({
+            ...review,
+            score: stars,
+            date: date,
+            user: userId,
+            movie: id,
+            avatar: userAvatar,
+            username: userName
+        })
+        const token = await getTokenSilently();
+        await create(review, token);
+        var nose2 = [];
+        await getReviewbyMovie(id)
+            .then(res => {
+                nose2 = res.data;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        var scores = nose2.map(post => post.score);
+        console.log(scores);
+        var suma = 0;
+        for (var i = 0; i < scores.length; i++) {
+            suma += scores[i];
+        }
+        var prom = Math.round(suma / scores.length);
+        console.log(prom);
+        await updateScore(id, prom);
+
+        alert("Reseña creada.");
     }
     return (
         <Fragment>
             <Container id="ContainerMainPage">
                 <h4 id="title">Crear reseña</h4>
                 <div id="cardReview">
-                    <CardComp name="Dune" img="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a58a7719-0dcf-4e0b-b7bb-d2b725dbbb8e/denr9lw-2ceb9359-60d1-47f8-975a-802963088d4e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2E1OGE3NzE5LTBkY2YtNGUwYi1iN2JiLWQyYjcyNWRiYmI4ZVwvZGVucjlsdy0yY2ViOTM1OS02MGQxLTQ3ZjgtOTc1YS04MDI5NjMwODhkNGUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.tdTbtAz_4gaRAUULq2dHWJM6NnbosnJAyoGDmfQeh0s" />
+                    <CardList name={name} img={img} />
                 </div>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <label id="label">Reseña</label>
                     <Form.Control
                         id="floatingDescCustom"
                         type="text"
                         placeholder="Reseña"
+                        value={review.content}
+                        onChange={handleChange}
+                        name="content"
                     />
                     <label id="label">Califica</label>
-                    <ReactStars count={5} onChange={ratingChanged} size={24} color2={'#ffa534'}/>
+                    <ReactStars count={5} onChange={ratingChanged} size={24} color2={'#ffa534'} />
                     <Button id="btn_crearMovieSerie" variant="light" type="submit">Crear</Button>
                 </Form>
             </Container>

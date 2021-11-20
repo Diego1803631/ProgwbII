@@ -8,17 +8,17 @@ import { NavDropdown } from "react-bootstrap";
 import { MdBeenhere } from "react-icons/md";
 import { Modal } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { useAuth0 } from "../hooks/react-auth0-spa";
 
 
 const ProfileNavbar = (props) => {
     const [modalShow2, setModalShow2] = React.useState(false);
+    const { user } = useAuth0();
     return (
         <div>
             <div id="profileinfo">
-                <Image id="profile" src="https://i.pinimg.com/originals/6c/0f/56/6c0f56bbe60aa6c72f384215326a0ca3.jpg" />
-                <p id="username">UserName <MdBeenhere /></p>
-                <Button className="btnSeguir" variant="light">Seguir</Button>
-                <Button className="btnEditP" variant="light" onClick={() => setModalShow2(true)}>Editar</Button>
+                <Image id="profile" src={user?.picture} />
+                <p id="username">{user?.name} <MdBeenhere /></p>
             </div>
             <Navbar id="LogNavbar" variant="dark" expand="lg">
                 <Container>
@@ -28,12 +28,12 @@ const ProfileNavbar = (props) => {
                         <Nav.Link href="/Following">Seguidos</Nav.Link>
                         <Nav.Link href="/Followers">Seguidores</Nav.Link>
                         <NavDropdown title="Opciones" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="/CreateCategory">Nueva Categoría</NavDropdown.Item>
-                                <NavDropdown.Item href="/CreatePlatform">Enlazar Plataforma</NavDropdown.Item>
-                                <NavDropdown.Item href="/CreateList">Nueva Lista</NavDropdown.Item>
-                                <NavDropdown.Item href="/CreateMovieOrSerie">Nueva Película/Serie</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Cerrar Sesión</NavDropdown.Item>
-                            </NavDropdown>
+                            <NavDropdown.Item href="/CreateCategory">Nueva Categoría</NavDropdown.Item>
+                            <NavDropdown.Item href="/CreatePlatform">Enlazar Plataforma</NavDropdown.Item>
+                            <NavDropdown.Item href="/CreateList">Nueva Lista</NavDropdown.Item>
+                            <NavDropdown.Item href="/CreateMovieOrSerie">Nueva Película/Serie</NavDropdown.Item>
+                            <NavDropdown.Item href="/Logout">Cerrar Sesión</NavDropdown.Item>
+                        </NavDropdown>
                     </Nav>
                 </Container>
             </Navbar>
@@ -127,7 +127,7 @@ function MyVerticallyCenteredModal2(props) {
                                 id="floatingImgCustom"
                                 type="file"
                                 placeholder="Imagen de perfil"
-                                onClick = {() => cargaImagen()}
+                                onClick={() => cargaImagen()}
                             />
                         </Form.Floating>
                     </Form.Group>
@@ -142,7 +142,7 @@ function MyVerticallyCenteredModal2(props) {
     );
 }
 
-function cargaImagen(){
+function cargaImagen() {
     var inputFile = document.getElementById('floatingImgCustom');
 
     var reader = new FileReader();

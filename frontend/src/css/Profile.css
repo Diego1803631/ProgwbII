@@ -31,3 +31,15 @@
 .btnEditP {
   margin-left: 5px;
 }
+#mlist{
+  color: white;
+}
+#x{
+  color: white;
+  font-size: 25px;
+  margin-left: 90%;
+}
+#x:hover{
+  opacity: 0.8;
+  cursor: pointer;
+}

@@ -1,117 +1,150 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
-import { Image } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import { Dropdown } from "react-bootstrap";
-import defaultCover from "../extras/Default_cover.jpg";
-import defaultPoster from "../extras/Default_poster.jpg";
+import { create } from "../api/MovieAPI";
+import { getall as getCat } from "../api/CategoryAPI";
+import { getall as getPla } from "../api/PlatformAPI";
+import {useAuth0} from "../hooks/react-auth0-spa";
 
 export default function CreateMovieSerie() {
+    const {getTokenSilently} = useAuth0();
+    const [category, setCategory] = useState([]);
+    const [platform, setPlatform] = useState([]);
+    useEffect(() => {
+        getCat()
+            .then(res => {
+                console.log(res);
+                setCategory(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        getPla()
+            .then(res => {
+                console.log(res);
+                setPlatform(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, []);
+    const [movie, setMovie] = useState({
+        title: "",
+        description: "",
+        score: "5",
+        image: "",
+        cover: "",
+        releasedate: "",
+        episodes: "",
+        category: "",
+        platform: ""
+    });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setMovie({
+            ...movie,
+            [name]: value,
+        });
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const token = await getTokenSilently();
+        await create(movie, token);
+        alert("Registro exitoso.");
+    }
+    //const handleSubmit2 = async (e) => {
+        //console.log(e.target.value);
+    //}
     return (
         <Fragment>
             <Container id="ContainerMainPage">
-                <Form>
-                    <Image id="banner" src={defaultCover} fluid />
-                    <Image id="poster" src={defaultPoster} />
+                <Form onSubmit={handleSubmit}>
                     <div id="desc">
                         <h4 id="title">Registrar película o serie</h4>
-                        <label>Examinar banner</label>
+                        <label>Banner</label>
                         <Form.Control
-                            id="floatingCoverCustom"
-                            type="file"
-                            placeholder="Examinar banner..."
-                            onClick = {() => cargaImagen()}
+                            id="floatingDesc2Custom"
+                            type="text"
+                            placeholder="URL banner..."
+                            value={movie.cover}
+                            onChange={handleChange}
+                            name="cover"
                         />
-                        <label>Examinar poster</label>
+                        <label>Poster</label>
                         <Form.Control
-                            id="floatingPosterCustom"
-                            type="file"
-                            placeholder="Examinar banner..."
-                            onClick = {() => cargaImagen()}
+                            id="floatingDesc2Custom"
+                            type="text"
+                            placeholder="URL poster..."
+                            value={movie.image}
+                            onChange={handleChange}
+                            name="image"
                         />
                         <label>Título</label>
                         <Form.Control
                             id="floatingDesc2Custom"
                             type="text"
                             placeholder="Título"
+                            value={movie.title}
+                            onChange={handleChange}
+                            name="title"
                         />
                         <label>Sinopsis</label>
                         <Form.Control
                             id="floatingDesc2Custom"
                             type="text"
                             placeholder="Sinopsis"
+                            value={movie.description}
+                            onChange={handleChange}
+                            name="description"
                         />
-                        <label id="lblnocabe">Fecha de lanzamiento</label>
+                        <label>Fecha de lanzamiento</label>
                         <Form.Control
-                            id="floatingDesc3Custom"
+                            id="floatingDesc2Custom"
                             type="date"
                             placeholder="fecha de lanzamiento"
+                            value={movie.releasedate}
+                            onChange={handleChange}
+                            name="releasedate"
                         />
-                        <label id="lblnocabe">Numero de episodios</label>
+                        <label>Numero de episodios</label>
                         <Form.Control
-                            id="floatingDesc3Custom"
+                            id="floatingDesc2Custom"
                             type="number"
                             placeholder="Numero de episodios"
+                            value={movie.episodes}
+                            onChange={handleChange}
+                            name="episodes"
                         />
-                        <label id="lblnocabe">Categoría</label>
+                        <label>Categoría</label>
                         <div>
                             <div id="dropdownCMS">
-                                <Form.Control
-                                    id="floatingDesc4Custom"
-                                    type="text"
-                                    placeholder="Categoría"
-                                />
-                                <Dropdown>
-                                    <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
-                                        Categoría
-                                    </Dropdown.Toggle>
-
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">Acción</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">Romance</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Terror</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Comedia</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Documental</Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
+                                <Form.Select value={movie.category} onChange={handleChange} name="category">
+                                    <option value="">...</option>
+                                    {category.map(post => <option value={post._id} key={post._id}>{post.name}</option>)}
+                                </Form.Select>
                             </div>
                         </div>
-                        <label id="lblnocabe">Plataforma</label>
+                        <label>Plataforma</label>
                         <div>
                             <div id="dropdownCMS">
-                                <Form.Control
-                                    id="floatingDesc4Custom"
-                                    type="text"
-                                    placeholder="Plataforma"
-                                />
-                                <Dropdown>
-                                    <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
-                                        Plataformas
-                                    </Dropdown.Toggle>
-
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">Netflix</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">HBOMAX</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Amazon Prime Video</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Paramount+</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Disney+</Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
+                                <Form.Select value={movie.platform} onChange={handleChange} name="platform">
+                                    <option value="">...</option>
+                                    {platform.map(post => <option value={post._id} key={post._id}>{post.name}</option>)}
+                                </Form.Select>
                             </div>
                         </div>
                     </div>
-
                     <Button id="btn_crearMovieSerie" variant="light" type="submit">Crear</Button>
                 </Form>
-            </Container>
-        </Fragment>
+            </Container >
+        </Fragment >
     );
 }
 
-function cargaImagen(){
-    var inputFile = document.getElementById('floatingCoverCustom');
-    var image = document.getElementById('banner');
-    var reader = new FileReader();
-    inputFile.text = reader;
-}
+//function cargaImagen() {
+    //var inputFile = document.getElementById('floatingCoverCustom');
+    //var image = document.getElementById('banner');
+    //var reader = new FileReader();
+    //inputFile.text = reader;
+//}

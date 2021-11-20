@@ -1,52 +1,123 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Image } from "react-bootstrap";
 import Review from "../components/Review";
 import ReactStars from 'react-stars'
-import { MdFavorite } from "react-icons/md";
-import { MdMode } from "react-icons/md";
 import { Button } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
 import Comment from "../components/Comment"
+import { useLocation } from "react-router";
+import { Link } from 'react-router-dom';
+import { getReviewbyMovie } from "../api/ReviewAPI";
+import { create } from "../api/LikesAPI";
+import { getListbyUser } from "../api/ListAPI";
+import { updateList } from "../api/ListAPI";
+import { useAuth0 } from "../hooks/react-auth0-spa";
 
 export default function Movie() {
+    const { user: UserAuth } = useAuth0();
+    const { getTokenSilently } = useAuth0();
+    const userId = UserAuth?.sub;
+    const location = useLocation();
+    const { id, name, img, cover, desc, category, platform, score, link } = location.state;
+    const idMovie = id;
+    const nameMovie = name;
+    const imgMovie = img;
+
+    const [review, setReview] = useState([]);
+    const handleReview = () => {
+        console.log(idMovie);
+        getReviewbyMovie(idMovie)
+            .then(res => {
+                console.log(res);
+                setReview(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+    var [like, setLike] = useState({
+        user: "",
+        movie: ""
+    });
+    const handleLike = async (e) => {
+        setLike({
+            ...like,
+            user: userId,
+            movie: idMovie
+        })
+        like = ({
+            ...like,
+            user: userId,
+            movie: idMovie
+        })
+        const token = await getTokenSilently();
+        await create(like, token);
+        alert(nameMovie + " se ha guardado en tus likes.");
+    }
+    const [list, setList] = useState([]);
+    const handleLists = async (e) => {
+        getListbyUser(userId)
+            .then(res => {
+                console.log(res);
+                setList(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+    const handleOption = async (e) => {
+        const { name } = e.target;
+        await updateList(name, id);
+        alert(nameMovie + " agregada a la lista.");
+    }
+
     return (
         <Fragment>
             <Container id="ContainerMainPage">
-                <Image id="banner" src="https://sm.ign.com/ign_es/gallery/d/dune-movie/dune-movie-images_vj82.jpg" fluid />
-                <Image id="poster" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a58a7719-0dcf-4e0b-b7bb-d2b725dbbb8e/denr9lw-2ceb9359-60d1-47f8-975a-802963088d4e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2E1OGE3NzE5LTBkY2YtNGUwYi1iN2JiLWQyYjcyNWRiYmI4ZVwvZGVucjlsdy0yY2ViOTM1OS02MGQxLTQ3ZjgtOTc1YS04MDI5NjMwODhkNGUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.tdTbtAz_4gaRAUULq2dHWJM6NnbosnJAyoGDmfQeh0s" />
+                <Image id="banner" src={cover} fluid />
+                <Image id="poster" src={img} />
                 <div id="desc">
-                    <h4>Dune</h4><label id="label">Sinopsis</label>
-                    <p>Arrakis, también denominado "Dune", se ha convertido en el planeta más importante del universo. A su alrededor comienza una gigantesca lucha por el poder que culmina en una guerra interestelar.</p>
-                    <div>
-                        <MdFavorite id="likes" /><p>300</p>
-                        <MdMode id="reviews" /><p>2</p>
-                    </div>
-                    <ReactStars id="stars" count={5} size={24} edit={0} color1={'#ffa534'} />
+                    <h4>{name}</h4><label id="label">Sinopsis</label>
+                    <p>{desc}</p>
+                    <label id="label">Categoría</label>
+                    <p>{category}</p>
+                    <label id="label">Plataforma</label>
+                    <a href={link}><p>{platform}</p></a>
+                    <ReactStars id="stars" count={score} size={24} edit={0} color1={'#ffa534'} />
                     <div id="log">
-                        <Button id="btnLike" variant="outline-danger">Like</Button><Button variant="outline-light" href="/CreateReview">Reseñar</Button>
-                        <Dropdown>
+                        <Button id="btnLike" variant="outline-danger" onClick={handleLike}>Like</Button>
+                        <Link id="linkcolor" to={{
+                            pathname: '/CreateReview',
+                            state: {
+                                id: idMovie,
+                                name: nameMovie,
+                                img: imgMovie
+                            }
+                        }}>
+                            <Button variant="outline-light">Reseñar</Button>
+                        </Link>
+                        <Dropdown onClick={handleLists}>
                             <Dropdown.Toggle variant="outline-light" id="dropdown-basic-agregarALista">
                                 Agregar a lista
                             </Dropdown.Toggle>
-
                             <Dropdown.Menu>
-                                <Dropdown.Item href="#/action-1">Top peliculas 2020</Dropdown.Item>
-                                <Dropdown.Item href="#/action-2">Top peliculas 2021</Dropdown.Item>
+                                {list.map(post => <Dropdown.Item value={post._id} key={post._id} name={post._id} onClick={handleOption}>{post.title}</Dropdown.Item>)}
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
                 </div>
-                <label id="label2">Reseñas hechas por los usuarios de List Factory</label>
-                <hr className="hr"></hr>
-                <Review name="User1" image="https://www.w3schools.com/howto/img_avatar.png" />
-                <div class="comment">
-                    <Comment id="comment" name="User2" image="https://scme.mx/wp-content/uploads/2020/06/img_avatar2-2.png" />
-                </div>
-                <Review name="User2" image="https://scme.mx/wp-content/uploads/2020/06/img_avatar2-2.png" />
-                <div class="comment">
-                    <Comment id="comment" name="User1" image="https://www.w3schools.com/howto/img_avatar.png" />
-                </div>
+                <hr id="nose" className="hr"></hr>
+                <Button id="btnMostrar" variant="outline-light" onClick={handleReview}>Mostrar reseñas</Button>
+                {review.map((post) =>
+                    <div>
+                        <Review id={post._id} name={post.username} image={post.avatar} content={post.content} score={post.score} date={post.date} />
+                        {
+                            post.comment.map(post => <div class="comment"><Comment id={post._id} user={post.user} name={post.username} image={post.avatar} content={post.content} date={post.date} /></div>)
+                        }
+                    </div>
+                )}
+
             </Container>
         </Fragment>
     );
